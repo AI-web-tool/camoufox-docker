@@ -33,32 +33,45 @@ docker run -d --name camoufox -p 9222:9222 -e CAMOUFOX_PORT=9222 --restart alway
 
 ## Getting the WebSocket Endpoint
 
-Each time the container starts, it generates a random token for the WebSocket endpoint. Get it from the logs:
+Each time the container starts, it generates a random token for the WebSocket endpoint.
+
+**Option 1: Query the API** (recommended for programmatic access)
+
+```bash
+curl -s http://localhost:9222/json
+# {"wsEndpointPath":"/9fdb26279ee5d7d04595337a5acec1c7"}
+```
+
+**Option 2: Check the logs**
 
 ```bash
 docker logs camoufox
 # Websocket endpoint: ws://localhost:9222/9fdb26279ee5d7d04595337a5acec1c7
 ```
 
-Or extract just the endpoint:
+**Option 3: Set a fixed token** (no need to discover)
 
-```bash
-docker logs camoufox 2>&1 | grep "Websocket endpoint" | tail -1
+Set the `CAMOUFOX_WS_PATH` environment variable to use a predictable token that persists across restarts:
+
+```yaml
+environment:
+  CAMOUFOX_PORT: 9222
+  CAMOUFOX_WS_PATH: my-secret-token
+# Endpoint will always be: ws://localhost:9222/my-secret-token
 ```
-
-The token changes on every container restart.
 
 ## Configuration
 
 | Environment Variable | Default | Description |
 |---------------------|---------|-------------|
 | `CAMOUFOX_PORT` | `9222` | Port for the Playwright WebSocket server |
+| `CAMOUFOX_WS_PATH` | *(random)* | Fixed WebSocket path/token. If unset, a random token is generated on each start. |
 
 ## Usage with n8n
 
 This container pairs with the [n8n-nodes-camoufox](https://github.com/LPilic/n8n-nodes-camoufox) community node. Configure the credential with:
 
-- **WebSocket Endpoint**: `ws://camoufox:9222/<token>` (use the container name when both services are on the same Docker network)
+- **WebSocket Endpoint**: `ws://camoufox:9222` (the node auto-discovers the token via the `/json` API), or `ws://camoufox:9222/<token>` with the full token
 
 ## License
 

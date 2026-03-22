@@ -17,6 +17,7 @@ from camoufox.pkgman import LOCAL_DATA
 from camoufox.utils import launch_options
 
 PORT = int(os.environ.get("CAMOUFOX_PORT", "9222"))
+WS_PATH = os.environ.get("CAMOUFOX_WS_PATH", "")
 LAUNCH_SCRIPT = LOCAL_DATA / "launchServer.js"
 
 
@@ -35,6 +36,10 @@ def main():
     config = launch_options(headless=True, port=PORT)
     config = strip_nulls(config)
     config = to_camel_case_dict(config)
+
+    if WS_PATH:
+        path = WS_PATH if WS_PATH.startswith("/") else f"/{WS_PATH}"
+        config["wsPath"] = path
 
     nodejs = get_nodejs()
     data = orjson.dumps(config)
