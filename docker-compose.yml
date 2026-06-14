@@ -1,4 +1,4 @@
-service:
+services:
   camoufox:
     build: ./camoufox
     container_name: camoufox
