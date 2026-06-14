@@ -1,8 +1,9 @@
-camoufox:
-  build: ./camoufox
-  container_name: camoufox
-  restart: always
-  ports:
-    - "9222:9222"
-  environment:
-    CAMOUFOX_PORT: 9222
+service:
+  camoufox:
+    build: ./camoufox
+    container_name: camoufox
+    restart: always
+    ports:
+      - "9222:9222"
+    environment:
+      CAMOUFOX_PORT: 9222
