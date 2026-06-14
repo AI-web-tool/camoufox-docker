@@ -1,6 +1,6 @@
 services:
   camoufox:
-    build: ./camoufox
+    build: .
     container_name: camoufox
     restart: always
     ports:
