@@ -9,3 +9,8 @@ services:
       - "9222"
     environment:
       CAMOUFOX_PORT: 9222
+    networks:
+      - dokploy-network
+networks:
+  dokploy-network:
+    external: true
