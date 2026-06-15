@@ -51,9 +51,9 @@ def main():
         text=True,
     )
     print(data)
-    # if process.stdin:
+    if process.stdin:
     #     process.stdin.write(base64.b64encode(data).decode())
-    #     process.stdin.close()
+        process.stdin.close()
 
     process.wait()
     raise RuntimeError("Server process terminated unexpectedly")
