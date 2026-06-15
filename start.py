@@ -50,6 +50,7 @@ def main():
         stdin=subprocess.PIPE,
         text=True,
     )
+    print(data)
     if process.stdin:
         process.stdin.write(base64.b64encode(data).decode())
         process.stdin.close()
